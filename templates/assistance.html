@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block titre %}Assistance{% endblock %}
+
+{% block contenu %}
+<section class="max-w-3xl mx-auto px-6 pt-12 pb-24">
+  <div class="text-center mb-10 reveal">
+    <span class="eyebrow-sombre">Espace assistance</span>
+    <h1 class="font-display font-bold text-3xl text-slate-900 mt-2">Une question, un blocage ?</h1>
+    <p class="text-slate-500 mt-2">Décrivez votre situation, notre équipe vous répond sous 24h ouvrées.</p>
+  </div>
+
+  {% if not config.SECURE_MODE %}
+  <div class="rounded-xl border border-amber-300 bg-amber-50 text-amber-800 text-sm px-4 py-3 mb-8 reveal">
+    ⚠️ Environnement de démonstration : le champ « message » est actuellement rendu sans filtrage
+    (vulnérabilité pédagogique A06 — SSTI). Essayez par exemple <code class="font-mono bg-amber-100 px-1 rounded">{{ '{{ 7*7 }}' }}</code>.
+  </div>
+  {% endif %}
+
+  <div class="carte-blanche reveal">
+    <form method="post" class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="champ-label">Nom complet</label>
+          <input type="text" name="nom" required value="{{ nom|default('') }}" class="champ-saisie" placeholder="Jean Dupont">
+        </div>
+        <div>
+          <label class="champ-label">Adresse e-mail</label>
+          <input type="email" name="email" required value="{{ email|default('') }}" class="champ-saisie" placeholder="jean.dupont@exemple.fr">
+        </div>
+      </div>
+      <div>
+        <label class="champ-label">Sujet</label>
+        <select name="sujet" class="champ-saisie">
+          <option {{ 'selected' if sujet == 'passeport' }}>Passeport / CNI</option>
+          <option {{ 'selected' if sujet == 'impots' }}>Impôts</option>
+          <option {{ 'selected' if sujet == 'etat-civil' }}>État civil</option>
+          <option {{ 'selected' if sujet == 'autre' }}>Autre demande</option>
+        </select>
+      </div>
+      <div>
+        <label class="champ-label">Votre message</label>
+        <textarea name="message" rows="5" required class="champ-saisie resize-none" placeholder="Décrivez votre demande en détail…">{{ message|default('') }}</textarea>
+      </div>
+      <button type="submit" class="btn-primaire w-full justify-center !py-3">
+        Envoyer ma demande
+      </button>
+    </form>
+  </div>
+
+  {% if confirmation_html %}
+  <div class="mt-8 reveal">
+    <h2 class="font-display font-semibold text-lg text-slate-900 mb-3">Confirmation</h2>
+    <div class="rounded-2xl overflow-hidden border border-slate-200">
+      {{ confirmation_html | safe }}
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

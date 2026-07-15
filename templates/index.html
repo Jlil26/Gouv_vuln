@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block titre %}Accueil{% endblock %}
+
+{% block contenu %}
+
+<!-- HERO -->
+<section class="relative overflow-hidden hero-fond">
+  <div class="max-w-7xl mx-auto px-6 pt-20 pb-28 relative z-10">
+    <div class="max-w-3xl reveal">
+      <span class="eyebrow">Portail officiel · Toutes vos démarches en un lieu unique</span>
+      <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-5 text-white">
+        Vos démarches administratives,
+        <span class="souligne-vague">simplifiées.</span>
+      </h1>
+      <p class="mt-6 text-lg text-blue-100 max-w-2xl">
+        Un seul portail pour l'état civil, les impôts, le passeport et bien plus encore.
+        Suivez l'avancement de vos dossiers en temps réel, où que vous soyez.
+      </p>
+
+      <!-- Barre de recherche -->
+      <form action="{{ url_for('recherche_demarches') }}" method="get" class="mt-10 max-w-xl">
+        <label for="recherche" class="sr-only">Rechercher une démarche</label>
+        <div class="recherche-barre">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 shrink-0">
+            <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+          </svg>
+          <input id="recherche" name="q" type="text" placeholder="Ex : renouveler mon passeport, déclarer mes impôts…"
+                 value="{{ terme_recherche|default('') }}"
+                 class="flex-1 bg-transparent outline-none text-slate-800 placeholder:text-slate-400 text-[15px]">
+          <button type="submit" class="btn-primaire !py-2.5 !px-5 shrink-0">Rechercher</button>
+        </div>
+      </form>
+
+      <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-blue-100/90">
+        <span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> 128 démarches en ligne</span>
+        <span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Suivi en temps réel</span>
+        <span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Disponible 24h/24</span>
+      </div>
+    </div>
+  </div>
+  <!-- Motif décoratif -->
+  <div class="hero-motif" aria-hidden="true"></div>
+</section>
+
+<!-- ACCÈS RAPIDES -->
+<section class="max-w-7xl mx-auto px-6 -mt-14 relative z-20">
+  <div class="flex items-end justify-between mb-6 reveal">
+    <div>
+      <h2 class="font-display font-bold text-2xl text-slate-900">
+        {% if terme_recherche %}Résultats pour « {{ terme_recherche }} »{% else %}Accès rapides{% endif %}
+      </h2>
+      <p class="text-slate-500 text-sm mt-1">Les démarches les plus demandées par les citoyens.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {% for service in services %}
+    <a href="{{ url_for('detail_service', slug=service.slug) }}" class="carte-service reveal" style="--delai: {{ loop.index0 * 60 }}ms">
+      <div class="carte-service-icone">
+        {% include "_icones.html" %}
+      </div>
+      <h3 class="font-display font-semibold text-lg text-slate-900 mt-4">{{ service.titre }}</h3>
+      <p class="text-sm text-slate-500 mt-2 leading-relaxed">{{ service.description }}</p>
+      <div class="mt-4 flex items-center justify-between">
+        <span class="badge-delai">{{ service.delai }}</span>
+        <span class="text-bleu-marianne text-sm font-medium flex items-center gap-1 carte-service-fleche">
+          Accéder
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>
+    {% else %}
+    <p class="text-slate-500 col-span-3 text-center py-12">Aucune démarche ne correspond à votre recherche.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- CHIFFRES CLÉS -->
+<section class="max-w-7xl mx-auto px-6 mt-24">
+  <div class="rounded-3xl bg-white border border-slate-200 shadow-sm p-10 grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
+    <div class="text-center">
+      <p class="font-display font-bold text-3xl text-bleu-marianne">2,4M</p>
+      <p class="text-sm text-slate-500 mt-1">Démarches traitées / an</p>
+    </div>
+    <div class="text-center">
+      <p class="font-display font-bold text-3xl text-bleu-marianne">98,2%</p>
+      <p class="text-sm text-slate-500 mt-1">Taux de satisfaction</p>
+    </div>
+    <div class="text-center">
+      <p class="font-display font-bold text-3xl text-bleu-marianne">4 min</p>
+      <p class="text-sm text-slate-500 mt-1">Temps moyen de dépôt</p>
+    </div>
+    <div class="text-center">
+      <p class="font-display font-bold text-3xl text-rouge-marianne">24/7</p>
+      <p class="text-sm text-slate-500 mt-1">Disponibilité du portail</p>
+    </div>
+  </div>
+</section>
+
+<!-- BANDEAU CTA -->
+<section class="max-w-7xl mx-auto px-6 my-24">
+  <div class="rounded-3xl bg-bleu-marianne relative overflow-hidden p-12 flex flex-col md:flex-row items-center justify-between gap-6 reveal">
+    <div class="relative z-10">
+      <h3 class="font-display font-bold text-2xl text-white">Une question sur votre dossier ?</h3>
+      <p class="text-blue-100 mt-2">Notre équipe d'assistance vous répond sous 24h ouvrées.</p>
+    </div>
+    <a href="{{ url_for('assistance') }}" class="relative z-10 bg-white text-bleu-marianne font-semibold px-6 py-3 rounded-xl hover:bg-blue-50 transition shrink-0">
+      Contacter l'assistance
+    </a>
+    <div class="cta-motif" aria-hidden="true"></div>
+  </div>
+</section>
+
+{% endblock %}

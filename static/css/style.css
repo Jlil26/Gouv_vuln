@@ -1,0 +1,177 @@
+/* =====================================================================
+   Gouv-Services — Styles signature
+   Charte : Bleu Marianne (#000091) / Blanc / Rouge Marianne (#E1000F)
+   ===================================================================== */
+
+/* --- Signature : bandeau tricolore en tête de page (référence aux
+       portails institutionnels français) ------------------------------ */
+.bandeau-tricolore {
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #000091 0%, #000091 33.33%,
+    #ffffff 33.33%, #ffffff 66.66%,
+    #e1000f 66.66%, #e1000f 100%
+  );
+}
+
+/* --- Navigation ------------------------------------------------------ */
+.nav-lien {
+  position: relative;
+  padding-bottom: 4px;
+  transition: color .2s ease;
+}
+.nav-lien::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 2px; width: 0%;
+  background: #000091;
+  transition: width .25s ease;
+}
+.nav-lien:hover { color: #000091; }
+.nav-lien:hover::after { width: 100%; }
+.nav-lien-actif { color: #000091; font-weight: 600; }
+.nav-lien-actif::after { width: 100%; }
+
+.btn-primaire {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #000091; color: #fff;
+  font-weight: 600; font-size: 14px;
+  padding: 10px 20px; border-radius: 12px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  box-shadow: 0 6px 16px -6px rgba(0,0,145,.45);
+}
+.btn-primaire:hover { background: #1414a8; transform: translateY(-1px); box-shadow: 0 10px 22px -8px rgba(0,0,145,.55); }
+
+.btn-secondaire {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: #000091; border: 1.5px solid #e2e4f5;
+  font-weight: 600; font-size: 14px;
+  padding: 9px 18px; border-radius: 12px;
+  transition: border-color .18s ease, background .18s ease;
+}
+.btn-secondaire:hover { background: #f3f4ff; border-color: #000091; }
+
+/* --- Hero -------------------------------------------------------------- */
+.hero-fond {
+  background: radial-gradient(1200px 500px at 20% -10%, #2a2ad1 0%, transparent 60%),
+              linear-gradient(160deg, #000091 0%, #00006b 100%);
+}
+.hero-motif {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 85% 20%, rgba(225,0,15,.18) 0%, transparent 45%),
+    radial-gradient(circle at 95% 70%, rgba(255,255,255,.08) 0%, transparent 40%);
+}
+.eyebrow {
+  display: inline-block; font-size: 12px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: #cfd0ff; background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 6px 14px; border-radius: 999px;
+}
+.eyebrow-sombre {
+  display: inline-block; font-size: 12px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: #000091; background: #e3e3fd;
+  padding: 6px 14px; border-radius: 999px;
+}
+.souligne-vague { position: relative; color: #fff; }
+
+.recherche-barre {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border-radius: 16px; padding: 8px 8px 8px 18px;
+  box-shadow: 0 20px 45px -20px rgba(0,0,0,.45);
+}
+
+/* --- Cartes services ---------------------------------------------------- */
+.carte-service {
+  display: block; background: #fff; border: 1px solid #e6e7f2;
+  border-radius: 20px; padding: 24px;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.carte-service:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -18px rgba(0,0,145,.28);
+  border-color: #c7c9f7;
+}
+.carte-service-icone {
+  width: 48px; height: 48px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  background: #e3e3fd; color: #000091;
+}
+.carte-service:hover .carte-service-icone { background: #000091; color: #fff; }
+.carte-service-fleche { transition: transform .2s ease; }
+.carte-service:hover .carte-service-fleche { transform: translateX(3px); }
+
+.badge-delai {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  color: #64748b; background: #f1f2fb;
+  padding: 4px 10px; border-radius: 999px;
+}
+
+.cta-motif {
+  position: absolute; right: -60px; top: -60px; width: 260px; height: 260px;
+  border-radius: 999px; background: rgba(225,0,15,.25); filter: blur(10px);
+}
+
+/* --- Cartes génériques (dashboard, formulaires) ------------------------ */
+.carte-blanche {
+  background: #fff; border: 1px solid #e6e7f2; border-radius: 20px; padding: 28px;
+  box-shadow: 0 1px 2px rgba(16,24,40,.04);
+}
+
+.champ-label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+.champ-saisie {
+  width: 100%; border: 1.5px solid #e2e4f5; border-radius: 12px;
+  padding: 11px 14px; font-size: 14px; color: #0f172a;
+  transition: border-color .18s ease, box-shadow .18s ease; outline: none;
+}
+.champ-saisie:focus { border-color: #000091; box-shadow: 0 0 0 3px rgba(0,0,145,.12); }
+
+/* --- Alertes / notifications -------------------------------------------- */
+.alerte-flash {
+  padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 500;
+}
+.alerte-success { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+.alerte-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+.alerte-carte { padding: 12px 14px; border-radius: 12px; font-size: 13.5px; line-height: 1.5; }
+.alerte-carte-info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.alerte-carte-warning { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+.alerte-carte-success { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+
+/* --- Statuts / progression ------------------------------------------------ */
+.statut-pill { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.statut-bleu { background: #e3e3fd; color: #000091; }
+.statut-vert { background: #dcfce7; color: #15803d; }
+.statut-orange { background: #ffedd5; color: #c2410c; }
+
+.barre-progression { height: 8px; border-radius: 999px; background: #eef0fa; overflow: hidden; }
+.barre-progression-remplie {
+  height: 100%; border-radius: 999px; width: 0%;
+  animation: remplirBarre 1.1s ease forwards .2s;
+}
+.barre-progression-remplie.barre-bleu { background: linear-gradient(90deg, #000091, #4b4bd6); }
+.barre-progression-remplie.barre-vert { background: linear-gradient(90deg, #15803d, #22c55e); }
+.barre-progression-remplie.barre-orange { background: linear-gradient(90deg, #c2410c, #fb923c); }
+@keyframes remplirBarre { to { width: var(--valeur); } }
+
+.etape-numero {
+  width: 32px; height: 32px; border-radius: 10px; background: #000091; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+
+/* --- Révélation au scroll ------------------------------------------------ */
+.reveal { opacity: 0; transform: translateY(14px); animation: apparaitre .6s ease forwards; }
+@keyframes apparaitre { to { opacity: 1; transform: translateY(0); } }
+
+/* Léger décalage en cascade pour les cartes de services */
+.carte-service.reveal { animation-delay: var(--delai, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .barre-progression-remplie { animation: none !important; opacity: 1 !important; transform: none !important; }
+}

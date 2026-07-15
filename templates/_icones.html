@@ -1,0 +1,16 @@
+{# Icônes SVG minimalistes par slug de service — inclus dans les cartes #}
+{% if service.icone == 'file-text' %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+{% elif service.icone == 'landmark' %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M4 10h16M4 10l8-6 8 6M6 10v9M10 10v9M14 10v9M18 10v9"/></svg>
+{% elif service.icone == 'book-user' %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5z"/><circle cx="10" cy="9" r="2"/><path d="M7 14c.5-1.5 1.8-2 3-2s2.5.5 3 2"/></svg>
+{% elif service.icone == 'car-front' %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 17h14M5 17a2 2 0 1 1-4 0v-3l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v3a2 2 0 1 1-4 0"/><circle cx="7.5" cy="17" r="0.5"/><circle cx="16.5" cy="17" r="0.5"/></svg>
+{% elif service.icone == 'heart-pulse' %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A4.5 4.5 0 0 0 17.5 4c-1.7 0-3 .8-3.9 2A5 5 0 0 0 9 4a4.5 4.5 0 0 0-4.5 4.5C4.5 12 8 15 12 19l1-1"/><path d="M3 13h3l2-4 3 7 2-4h4"/></svg>
+{% elif service.icone == 'home' %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+{% else %}
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/></svg>
+{% endif %}

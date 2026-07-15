@@ -1,0 +1,16 @@
+# =====================================================================
+# requirements-secure.txt — Version corrigée (remédiation A06)
+#
+# À utiliser après correction de la vulnérabilité « Composants
+# obsolètes ». Contient des versions maintenues et à jour au moment de
+# la rédaction. Pensez à vérifier régulièrement les avis de sécurité
+# (ex : `pip list --outdated`, GitHub Dependabot, `pip-audit`).
+# =====================================================================
+
+Flask==3.0.3
+Jinja2==3.1.4
+Werkzeug==3.0.3
+itsdangerous==2.2.0
+MarkupSafe==2.1.5
+click==8.1.7
+gunicorn==22.0.0

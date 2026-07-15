@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block titre %}Gouv-Services{% endblock %} — Portail National des Services Citoyens</title>
+<meta name="description" content="Portail National des Services Citoyens : toutes vos démarches administratives en un seul endroit.">
+
+<!-- Polices -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN (mode démonstration / prototypage rapide) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'bleu-marianne': '#000091',
+          'bleu-marianne-dark': '#00006b',
+          'bleu-clair': '#e3e3fd',
+          'rouge-marianne': '#e1000f',
+          'gris-ardoise': '#161616',
+          'gris-fond': '#f6f6f9',
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          sans: ['Inter', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gris-fond text-gris-ardoise font-sans antialiased">
+
+<!-- Bandeau tricolore signature -->
+<div class="bandeau-tricolore" aria-hidden="true"></div>
+
+<!-- Bandeau institutionnel -->
+<div class="bg-gris-ardoise text-white text-xs">
+  <div class="max-w-7xl mx-auto px-6 py-1.5 flex items-center justify-between">
+    <span class="tracking-wide">République Numérique — Portail Officiel des Services Publics</span>
+    <span class="hidden sm:inline opacity-70">
+      Mode plateforme :
+      {% if config.SECURE_MODE %}
+        <span class="text-emerald-400 font-semibold">SÉCURISÉ</span>
+      {% else %}
+        <span class="text-amber-400 font-semibold">DÉMONSTRATION (non durci)</span>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+<!-- Navigation principale -->
+<header class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-40">
+  <nav class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="{{ url_for('accueil') }}" class="flex items-center gap-3 group">
+      <span class="logo-marque" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="42" height="42" fill="none">
+          <rect x="1" y="1" width="46" height="46" rx="10" fill="#000091"/>
+          <path d="M12 34V16l6.5 11L25 16v18" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M31 16v18h6" stroke="#E1000F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </span>
+      <span class="leading-tight">
+        <span class="block font-display font-bold text-lg text-bleu-marianne tracking-tight">Gouv-Services</span>
+        <span class="block text-[11px] uppercase tracking-[0.18em] text-slate-500">Portail National</span>
+      </span>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-700">
+      <a href="{{ url_for('accueil') }}" class="nav-lien {% if request.endpoint == 'accueil' %}nav-lien-actif{% endif %}">Accueil</a>
+      <a href="{{ url_for('dashboard') }}" class="nav-lien {% if request.endpoint == 'dashboard' %}nav-lien-actif{% endif %}">Mon espace</a>
+      <a href="{{ url_for('assistance') }}" class="nav-lien {% if request.endpoint == 'assistance' %}nav-lien-actif{% endif %}">Assistance</a>
+      <a href="{{ url_for('admin_system_status') }}" class="nav-lien text-slate-400 hover:text-rouge-marianne">État système</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="{{ url_for('dashboard') }}" class="btn-primaire">
+        Mon espace
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- Messages flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="max-w-7xl mx-auto px-6 pt-4 space-y-2">
+      {% for categorie, message in messages %}
+        <div class="alerte-flash alerte-{{ categorie }}" role="status">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main>
+  {% block contenu %}{% endblock %}
+</main>
+
+<footer class="bg-gris-ardoise text-slate-300 mt-24">
+  <div class="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <div>
+      <span class="font-display font-bold text-white text-lg">Gouv-Services</span>
+      <p class="mt-3 text-sm text-slate-400 leading-relaxed">Portail National des Services Citoyens. Simplifier les démarches administratives pour chaque citoyen.</p>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold text-sm mb-3 uppercase tracking-wide">Démarches</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+        <li><a href="{{ url_for('detail_service', slug='etat-civil') }}" class="hover:text-white transition">État civil</a></li>
+        <li><a href="{{ url_for('detail_service', slug='impots') }}" class="hover:text-white transition">Impôts</a></li>
+        <li><a href="{{ url_for('detail_service', slug='passeport') }}" class="hover:text-white transition">Passeport</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold text-sm mb-3 uppercase tracking-wide">Aide</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+        <li><a href="{{ url_for('assistance') }}" class="hover:text-white transition">Contacter l'assistance</a></li>
+        <li><a href="{{ url_for('accueil') }}" class="hover:text-white transition">Foire aux questions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold text-sm mb-3 uppercase tracking-wide">Plateforme</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+        <li><a href="{{ url_for('admin_system_status') }}" class="hover:text-white transition">État système</a></li>
+        <li><span class="text-slate-500">Environnement : {{ 'sécurisé' if config.SECURE_MODE else 'démonstration' }}</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-5 text-xs text-slate-500 flex flex-col sm:flex-row justify-between gap-2">
+      <span>&copy; 2026 République Numérique — Application pédagogique d'audit de sécurité.</span>
+      <span>Ceci n'est pas un site gouvernemental officiel — démonstrateur technique.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

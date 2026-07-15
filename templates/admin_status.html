@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titre %}État système{% endblock %}
+
+{% block contenu %}
+<section class="max-w-5xl mx-auto px-6 pt-12 pb-24">
+  <div class="flex items-center justify-between mb-8 reveal">
+    <div>
+      <span class="eyebrow-sombre">Panneau technique interne</span>
+      <h1 class="font-display font-bold text-3xl text-slate-900 mt-2">État du système</h1>
+    </div>
+    {% if session.get('est_admin') %}
+    <a href="{{ url_for('admin_logout') }}" class="btn-secondaire">Se déconnecter</a>
+    {% endif %}
+  </div>
+
+  {% if mode_vulnerable %}
+  <div class="rounded-xl border border-rouge-marianne/40 bg-red-50 text-red-800 text-sm px-4 py-3 mb-8 reveal">
+    ⚠️ Cette page est actuellement accessible <strong>sans authentification</strong> (vulnérabilité pédagogique
+    A05 — Security Misconfiguration). En mode sécurisé, elle exigerait une session administrateur valide.
+  </div>
+  {% endif %}
+
+  <div class="carte-blanche reveal">
+    <table class="w-full text-sm">
+      <tbody class="divide-y divide-slate-100">
+        {% for cle, valeur in infos.items() %}
+        <tr>
+          <td class="py-3 pr-6 font-medium text-slate-600 align-top whitespace-nowrap">{{ cle }}</td>
+          <td class="py-3 text-slate-800 font-mono text-[13px] break-all">
+            {% if valeur is iterable and valeur is not string %}
+              <ul class="space-y-1">
+                {% for item in valeur %}<li>{{ item }}</li>{% endfor %}
+              </ul>
+            {% else %}
+              {{ valeur }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

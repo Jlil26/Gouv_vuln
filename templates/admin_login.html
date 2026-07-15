@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titre %}Connexion administrateur{% endblock %}
+
+{% block contenu %}
+<section class="max-w-md mx-auto px-6 pt-16 pb-24">
+  <div class="text-center mb-8 reveal">
+    <span class="eyebrow-sombre">Accès restreint</span>
+    <h1 class="font-display font-bold text-2xl text-slate-900 mt-2">Connexion administrateur</h1>
+    <p class="text-slate-500 mt-2 text-sm">Cet espace est protégé et réservé aux agents habilités.</p>
+  </div>
+
+  {% if erreur %}
+  <div class="rounded-xl border border-rouge-marianne/40 bg-red-50 text-red-800 text-sm px-4 py-3 mb-6">
+    {{ erreur }}
+  </div>
+  {% endif %}
+
+  <div class="carte-blanche reveal">
+    <form method="post" class="space-y-5">
+      <div>
+        <label class="champ-label">Identifiant</label>
+        <input type="text" name="utilisateur" required class="champ-saisie" autofocus>
+      </div>
+      <div>
+        <label class="champ-label">Mot de passe</label>
+        <input type="password" name="mot_de_passe" required class="champ-saisie">
+      </div>
+      <button type="submit" class="btn-primaire w-full justify-center !py-3">Se connecter</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

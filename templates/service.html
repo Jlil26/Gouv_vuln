@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titre %}{{ service.titre }}{% endblock %}
+
+{% block contenu %}
+<section class="max-w-4xl mx-auto px-6 pt-12 pb-24">
+  <a href="{{ url_for('accueil') }}" class="text-sm text-bleu-marianne font-medium flex items-center gap-1 mb-8 hover:underline w-fit">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour à l'accueil
+  </a>
+
+  <div class="reveal">
+    <span class="badge-delai">{{ service.delai }}</span>
+    <h1 class="font-display font-bold text-3xl text-slate-900 mt-4">{{ service.titre }}</h1>
+    <p class="text-slate-500 mt-3 text-lg max-w-2xl">{{ service.description }}</p>
+  </div>
+
+  <div class="carte-blanche mt-10 reveal">
+    <h2 class="font-display font-semibold text-lg text-slate-900 mb-4">Étapes de la démarche</h2>
+    <ol class="space-y-4">
+      <li class="flex gap-4">
+        <span class="etape-numero">1</span>
+        <div><p class="font-medium text-slate-800">Vérifier votre éligibilité</p><p class="text-sm text-slate-500">Consultez les conditions requises pour cette démarche.</p></div>
+      </li>
+      <li class="flex gap-4">
+        <span class="etape-numero">2</span>
+        <div><p class="font-medium text-slate-800">Rassembler vos justificatifs</p><p class="text-sm text-slate-500">Pièce d'identité, justificatif de domicile, etc.</p></div>
+      </li>
+      <li class="flex gap-4">
+        <span class="etape-numero">3</span>
+        <div><p class="font-medium text-slate-800">Déposer votre dossier en ligne</p><p class="text-sm text-slate-500">Suivi en temps réel depuis votre espace personnel.</p></div>
+      </li>
+    </ol>
+    <a href="{{ url_for('dashboard') }}" class="btn-primaire mt-8">Commencer ma démarche</a>
+  </div>
+</section>
+{% endblock %}

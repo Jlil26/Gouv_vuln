@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block titre %}Mon espace{% endblock %}
+
+{% block contenu %}
+<section class="max-w-7xl mx-auto px-6 pt-12 pb-24">
+
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 reveal">
+    <div>
+      <span class="eyebrow-sombre">Espace personnel</span>
+      <h1 class="font-display font-bold text-3xl text-slate-900 mt-2">Bonjour {{ citoyen.prenom }} 👋</h1>
+      <p class="text-slate-500 mt-1">Usager n°{{ citoyen.numero_usager }} — Voici l'état de vos démarches.</p>
+    </div>
+    <a href="{{ url_for('assistance') }}" class="btn-secondaire">Besoin d'aide ?</a>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Colonne principale : démarches -->
+    <div class="lg:col-span-2 space-y-5">
+      <div class="carte-blanche reveal">
+        <h2 class="font-display font-semibold text-lg text-slate-900 mb-5">Mes démarches en cours</h2>
+        <div class="space-y-5">
+          {% for d in demarches %}
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium text-slate-800 text-sm">{{ d.nom }}</span>
+              <span class="statut-pill statut-{{ d.couleur }}">{{ d.statut }}</span>
+            </div>
+            <div class="barre-progression">
+              <div class="barre-progression-remplie barre-{{ d.couleur }}" style="--valeur: {{ d.avancement }}%"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Graphique d'activité (SVG animé, aucune lib externe) -->
+      <div class="carte-blanche reveal">
+        <h2 class="font-display font-semibold text-lg text-slate-900 mb-1">Activité des 6 derniers mois</h2>
+        <p class="text-sm text-slate-500 mb-6">Nombre de démarches déposées sur le portail</p>
+        <svg viewBox="0 0 560 180" class="w-full h-44" id="graphique-activite">
+          <defs>
+            <linearGradient id="degradeBarre" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#000091"/>
+              <stop offset="100%" stop-color="#4b4bd6"/>
+            </linearGradient>
+          </defs>
+          {% set valeurs = [3, 5, 4, 7, 6, 9] %}
+          {% set mois = ['Févr.', 'Mars', 'Avr.', 'Mai', 'Juin', 'Juil.'] %}
+          {% for v in valeurs %}
+          <rect class="barre-graphique" x="{{ 30 + loop.index0 * 90 }}" y="180" width="46" rx="8"
+                height="0" data-hauteur="{{ v * 16 }}" fill="url(#degradeBarre)" style="--i:{{ loop.index0 }}"/>
+          <text x="{{ 53 + loop.index0 * 90 }}" y="170" text-anchor="middle" font-size="12" fill="#64748b">{{ mois[loop.index0] }}</text>
+          {% endfor %}
+        </svg>
+      </div>
+    </div>
+
+    <!-- Colonne latérale : alertes -->
+    <div class="space-y-5">
+      <div class="carte-blanche reveal">
+        <h2 class="font-display font-semibold text-lg text-slate-900 mb-4">Notifications</h2>
+        <div class="space-y-3">
+          {% for a in alertes %}
+          <div class="alerte-carte alerte-carte-{{ a.type }}">
+            {{ a.message }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="carte-blanche reveal">
+        <h2 class="font-display font-semibold text-lg text-slate-900 mb-4">Documents</h2>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-center justify-between text-slate-700">
+            <span>Avis d'imposition 2025</span>
+            <span class="text-bleu-marianne font-medium cursor-pointer hover:underline">Télécharger</span>
+          </li>
+          <li class="flex items-center justify-between text-slate-700">
+            <span>Attestation de droits Vitale</span>
+            <span class="text-bleu-marianne font-medium cursor-pointer hover:underline">Télécharger</span>
+          </li>
+          <li class="flex items-center justify-between text-slate-700">
+            <span>Justificatif de domicile</span>
+            <span class="text-bleu-marianne font-medium cursor-pointer hover:underline">Télécharger</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Anime la montée des barres du graphique d'activité au chargement.
+  document.querySelectorAll('.barre-graphique').forEach((barre) => {
+    const hauteur = parseFloat(barre.dataset.hauteur);
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        barre.setAttribute('y', 180 - hauteur);
+        barre.setAttribute('height', hauteur);
+      }, 120 * parseInt(barre.style.getPropertyValue('--i')));
+    });
+  });
+</script>
+{% endblock %}

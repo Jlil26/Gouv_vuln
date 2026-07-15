@@ -1,0 +1,30 @@
+# =====================================================================
+# requirements.txt — Gouv-Services
+#
+# ⚠️ DÉMONSTRATION PÉDAGOGIQUE — A06:2021 Vulnerable and Outdated
+# Components.
+#
+# Les versions ci-dessous sont volontairement ANCIENNES par rapport aux
+# versions stables actuelles, afin d'illustrer le risque lié à des
+# composants obsolètes / non maintenus (dépendances non mises à jour,
+# CVE connues corrigées dans des versions ultérieures). Elles sont à
+# utiliser UNIQUEMENT dans un environnement isolé de démonstration.
+#
+# --- Correctif (mode SECURE_MODE = True côté audit) -------------------
+# Pour la remédiation, mettre à jour vers les dernières versions stables,
+# par exemple :
+#   Flask>=3.0.3
+#   Jinja2>=3.1.4
+#   Werkzeug>=3.0.3
+#   itsdangerous>=2.2.0
+#   MarkupSafe>=2.1.5
+#   gunicorn>=22.0.0
+# =====================================================================
+
+Flask==0.12.2
+Jinja2==2.10
+Werkzeug==0.14.1
+itsdangerous==0.24
+MarkupSafe==0.23
+click==6.7
+gunicorn==19.9.0

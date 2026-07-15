@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titre %}Page non trouvée{% endblock %}
+
+{% block contenu %}
+<section class="max-w-2xl mx-auto px-6 py-32 text-center reveal">
+  <p class="font-display font-bold text-7xl text-bleu-marianne">404</p>
+  <h1 class="font-display font-semibold text-2xl text-slate-900 mt-4">Cette page n'existe pas</h1>
+  <p class="text-slate-500 mt-3">La démarche que vous recherchez n'est pas (ou plus) disponible sur le portail.</p>
+  <a href="{{ url_for('accueil') }}" class="btn-primaire mt-8 inline-flex">Retour à l'accueil</a>
+</section>
+{% endblock %}
