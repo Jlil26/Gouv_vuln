@@ -1,11 +1,20 @@
-# Gouv-Services — Portail National des Services Citoyens
+# Togo-Services — Portail National des Services Publics du Togo
 
-Application de démonstration (Flask + Tailwind) simulant un portail de
-services publics, conçue pour un **exercice d'audit de sécurité**.
+Application de démonstration (Flask + Tailwind) simulant le portail
+national des services publics togolais (à la manière de gouv.tg),
+conçue pour un **exercice d'audit de sécurité**.
 
 Elle intègre exactement **deux vulnérabilités du Top 10 OWASP 2021**,
 activables/désactivables en un clic via une seule variable de
 configuration : `SECURE_MODE`.
+
+Un véritable **module de compte citoyen** (inscription, connexion,
+déconnexion, espace personnel protégé) a été ajouté. Ce module est
+volontairement **hors du périmètre des vulnérabilités pédagogiques** :
+il applique en permanence les bonnes pratiques standard (mots de passe
+hachés, requêtes SQL paramétrées, contrôle d'accès par session) quel
+que soit l'état de `SECURE_MODE`, afin de ne jamais introduire de
+troisième vulnérabilité non désirée.
 
 > ⚠️ **Usage strictement pédagogique.** Ne déployez jamais le mode
 > vulnérable (`SECURE_MODE=False`) sur un réseau accessible depuis
@@ -26,6 +35,25 @@ configuration : `SECURE_MODE`.
 |---|---|---|
 | `requirements.txt` | Versions volontairement obsolètes (Flask 0.12.2, Jinja2 2.10…) | Voir `requirements-secure.txt` (versions à jour) |
 | `/assistance` (formulaire) | Le message est injecté dans une chaîne puis passé à `render_template_string()` → **SSTI** exploitable (essayer `{{ 7*7 }}` ou `{{ config }}`) | Le message est échappé (`markupsafe.escape`) et rendu via un template **statique** (`render_template`) : aucune expression n'est interprétée |
+
+---
+
+## 1 bis. Module de compte citoyen (hors périmètre des vulnérabilités)
+
+| Route | Description |
+|---|---|
+| `GET/POST /inscription` | Création d'un compte (prénom, nom, e-mail, téléphone, ville, mot de passe) |
+| `GET/POST /connexion` | Connexion par e-mail + mot de passe |
+| `GET /deconnexion` | Déconnexion (vide la session) |
+| `GET /dashboard` | Espace personnel — **protégé**, redirige vers `/connexion` si non authentifié |
+
+Bonnes pratiques appliquées (voir `db.py`), **indépendamment de `SECURE_MODE`** :
+- Mots de passe hachés avec `werkzeug.security.generate_password_hash` / vérifiés avec `check_password_hash` — jamais stockés en clair.
+- Requêtes SQL **paramétrées** (`?` placeholders) via `sqlite3` — aucune injection SQL possible, y compris en mode vulnérable.
+- Validation serveur des champs (format e-mail, longueur du mot de passe ≥ 8 caractères, confirmation, unicité de l'e-mail).
+- `/dashboard` protégé par le décorateur `connexion_requise`, actif en permanence (ce contrôle d'accès n'est pas lié à la démonstration A05, qui concerne uniquement `/admin/system-status`).
+
+La base `togo_services.db` (SQLite) est créée automatiquement au premier lancement dans le dossier du projet.
 
 ---
 
@@ -92,11 +120,11 @@ sudo apt update && sudo apt install -y python3-venv python3-pip nginx
 
 ### 4.2. Déployer le code
 ```bash
-sudo mkdir -p /var/www/gouv-services
-sudo chown $USER:$USER /var/www/gouv-services
-# copier le contenu du projet dans /var/www/gouv-services
+sudo mkdir -p /var/www/togo-services
+sudo chown $USER:$USER /var/www/togo-services
+# copier le contenu du projet dans /var/www/togo-services
 
-cd /var/www/gouv-services
+cd /var/www/togo-services
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements-secure.txt
@@ -106,21 +134,21 @@ cp .env.example .env
 ```
 
 ### 4.3. Service systemd (Gunicorn)
-Créer `/etc/systemd/system/gouv-services.service` :
+Créer `/etc/systemd/system/togo-services.service` :
 
 ```ini
 [Unit]
-Description=Gouv-Services (Gunicorn)
+Description=Togo-Services (Gunicorn)
 After=network.target
 
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/gouv-services
-EnvironmentFile=/var/www/gouv-services/.env
-ExecStart=/var/www/gouv-services/venv/bin/gunicorn \
+WorkingDirectory=/var/www/togo-services
+EnvironmentFile=/var/www/togo-services/.env
+ExecStart=/var/www/togo-services/venv/bin/gunicorn \
           --workers 3 \
-          --bind unix:/var/www/gouv-services/gouv-services.sock \
+          --bind unix:/var/www/togo-services/togo-services.sock \
           wsgi:app
 Restart=always
 
@@ -130,12 +158,12 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable --now gouv-services
-sudo systemctl status gouv-services
+sudo systemctl enable --now togo-services
+sudo systemctl status togo-services
 ```
 
 ### 4.4. Reverse proxy Nginx
-Créer `/etc/nginx/sites-available/gouv-services` :
+Créer `/etc/nginx/sites-available/togo-services` :
 
 ```nginx
 server {
@@ -143,12 +171,12 @@ server {
     server_name votre-domaine.exemple;
 
     location /static/ {
-        alias /var/www/gouv-services/static/;
+        alias /var/www/togo-services/static/;
         expires 30d;
     }
 
     location / {
-        proxy_pass http://unix:/var/www/gouv-services/gouv-services.sock;
+        proxy_pass http://unix:/var/www/togo-services/togo-services.sock;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -161,7 +189,7 @@ server {
 ```
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/gouv-services /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/togo-services /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
@@ -179,20 +207,24 @@ dans `.env` et décommenter l'en-tête `Strict-Transport-Security` dans
 ## 5. Structure du projet
 
 ```
-gouv-services/
+togo-services/
 ├── app.py                     # Application Flask (routes + logique des 2 vulnérabilités)
+├── db.py                      # Module de comptes citoyens (hors périmètre des vulnérabilités)
 ├── config.py                  # Configuration + bascule SECURE_MODE
 ├── wsgi.py                    # Point d'entrée Gunicorn
 ├── requirements.txt           # Dépendances volontairement obsolètes (preuve A06)
 ├── requirements-secure.txt    # Dépendances à jour (pour exécuter l'app)
 ├── .env.example                # Variables d'environnement
+├── togo_services.db            # Base SQLite des usagers (créée au 1er lancement)
 ├── static/
-│   ├── css/style.css          # Charte graphique bleu/blanc/rouge
+│   ├── css/style.css          # Charte graphique vert/jaune/rouge (Togo)
 │   └── js/main.js
 └── templates/
-    ├── base.html               # Layout, navigation, bandeau tricolore
+    ├── base.html               # Layout, navigation, bandeau vert/jaune
     ├── index.html               # Page d'accueil (hero + accès rapides)
     ├── service.html              # Détail d'une démarche
+    ├── inscription.html            # Création de compte citoyen
+    ├── connexion.html               # Connexion citoyenne
     ├── dashboard.html             # Espace citoyen (cartes, graphique, alertes)
     ├── assistance.html             # Formulaire — point d'entrée SSTI
     ├── _confirmation_assistance.html # Template statique (mode sécurisé)

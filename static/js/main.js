@@ -1,4 +1,4 @@
-// Gouv-Services — comportements front-end légers (aucune dépendance).
+// Togo-Services — comportements front-end légers (aucune dépendance).
 
 document.addEventListener("DOMContentLoaded", () => {
   // Rejoue les animations "reveal" uniquement lorsque l'élément entre

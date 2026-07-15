@@ -41,7 +41,7 @@ class Config:
     ADMIN_PASSWORD: str = os.environ.get("ADMIN_PASSWORD", "ChangeMoiImmediatement!2024")
 
     # --- Divers -----------------------------------------------------------
-    APP_NAME: str = "Gouv-Services — Portail National des Services Citoyens"
+    APP_NAME: str = "Togo-Services — Portail National des Services Publics du Togo"
     SESSION_COOKIE_HTTPONLY: bool = True
     SESSION_COOKIE_SAMESITE: str = "Lax"
     # Le cookie "Secure" nécessite HTTPS ; à activer derrière Nginx/TLS en prod.

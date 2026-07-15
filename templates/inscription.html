@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block titre %}Créer mon compte{% endblock %}
+
+{% block contenu %}
+<section class="max-w-xl mx-auto px-6 pt-12 pb-24">
+  <div class="text-center mb-8 reveal">
+    <span class="eyebrow-sombre">Espace citoyen</span>
+    <h1 class="font-display font-bold text-3xl text-slate-900 mt-2">Créer mon compte</h1>
+    <p class="text-slate-500 mt-2 text-sm">Un compte unique pour accéder à toutes vos démarches sur Togo-Services.</p>
+  </div>
+
+  {% if erreurs %}
+  <div class="rounded-xl border border-rouge-togo/40 bg-red-50 text-red-800 text-sm px-4 py-3 mb-6 reveal">
+    <ul class="list-disc list-inside space-y-1">
+      {% for erreur in erreurs %}<li>{{ erreur }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="carte-blanche reveal">
+    <form method="post" class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="champ-label">Prénom</label>
+          <input type="text" name="prenom" required value="{{ valeurs.prenom }}" class="champ-saisie" placeholder="Kossi">
+        </div>
+        <div>
+          <label class="champ-label">Nom</label>
+          <input type="text" name="nom" required value="{{ valeurs.nom }}" class="champ-saisie" placeholder="Adjoh">
+        </div>
+      </div>
+      <div>
+        <label class="champ-label">Adresse e-mail</label>
+        <input type="email" name="email" required value="{{ valeurs.email }}" class="champ-saisie" placeholder="kossi.adjoh@exemple.tg">
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="champ-label">Téléphone</label>
+          <input type="tel" name="telephone" value="{{ valeurs.telephone }}" class="champ-saisie" placeholder="+228 90 00 00 00">
+        </div>
+        <div>
+          <label class="champ-label">Ville</label>
+          <input type="text" name="ville" value="{{ valeurs.ville }}" class="champ-saisie" placeholder="Lomé">
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="champ-label">Mot de passe</label>
+          <input type="password" name="mot_de_passe" required minlength="8" class="champ-saisie">
+          <p class="text-xs text-slate-400 mt-1">8 caractères minimum.</p>
+        </div>
+        <div>
+          <label class="champ-label">Confirmation</label>
+          <input type="password" name="confirmation" required minlength="8" class="champ-saisie">
+        </div>
+      </div>
+      <button type="submit" class="btn-primaire w-full justify-center !py-3">
+        Créer mon compte
+      </button>
+    </form>
+  </div>
+
+  <p class="text-center text-sm text-slate-500 mt-6 reveal">
+    Déjà inscrit ? <a href="{{ url_for('connexion') }}" class="text-vert-togo font-semibold hover:underline">Se connecter</a>
+  </p>
+</section>
+{% endblock %}
